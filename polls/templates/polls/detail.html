@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Question and Choices</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+    <h1>{{ question.question_text }}</h1>
+    <a href="{% url 'polls:detail' question.id %}" class="btn btn-secondary mb-3">Vote again?</a>
+
+    {% if user.is_authenticated %}
+        <!-- Your existing voting form here -->
+        {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                <strong>{{ error_message }}</strong>
+            </div>
+        {% endif %}
+        <form action="{% url 'polls:vote' question.id %}" method="post">
+            {% csrf_token %}
+            {% for choice in question.choice_set.all %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="choice" id="choice_{{ forloop.counter }}" value="{{ choice.id }}" />
+                    <label class="form-check-label" for="choice_{{ forloop.counter }}">
+                        {{ choice.choice_text }}
+                    </label>
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary mt-3">Vote</button>
+        </form>
+    {% else %}
+        <p>You need to <a href="{% url 'user_auth:login' %}">log in</a> to vote.</p>
+    {% endif %}
+
+    <!-- Include Bootstrap JS (at the end of the body for better performance) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

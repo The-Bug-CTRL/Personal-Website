@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sample Polls</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add any other necessary meta tags, stylesheets, or scripts here -->
+</head>
+<body class="container mt-4">
+
+    {% if latest_question_list %}
+        <ul class="list-group">
+        {% for question in latest_question_list %}
+            <li class="list-group-item">
+                <a href="{% url 'polls:detail' question.id %}" class="text-decoration-none text-dark">
+                    {{ question.question_text }}
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p class="alert alert-info mt-3">No polls are available.</p>
+    {% endif %}
+
+    <!-- Include Bootstrap JS (at the end of the body for better performance) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
